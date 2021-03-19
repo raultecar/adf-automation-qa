@@ -8,13 +8,14 @@ exports.config = {
   specs: ['spec.js'],
   framework: 'jasmine',
 
-  onPrepare: () => {
+  onPrepare: async() => {
       // set browser size...
       browser.manage().window().setSize(1024, 800);
 
       // better jasmine 2 reports...
       const SpecReporter = require('jasmine-spec-reporter');
       jasmine.getEnv().addReporter(new SpecReporter({displayStacktrace: 'specs'}));
+      global.globalVariables = require('./globalVariables');
   },
 
   capabilities: {
@@ -29,6 +30,7 @@ exports.config = {
               'verbose',
               'log-path=/tmp/chromedriver.log'
           ],
+          w3c: false, //to bypass known issue with protractor and right-click
           prefs: {
               // disable chrome's annoying password manager
               'profile.password_manager_enabled': false,
